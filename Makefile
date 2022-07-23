@@ -17,12 +17,15 @@ fmt_check: ## Check is the codebase properly formatted.
 lint: ## Lint the codebase.
 	cargo clippy
 
+doc_check: ## Check the documentation.
+	cargo doc --all-features --no-deps
+
 test: ## Lint the codebase.
 	cargo test
 
 comply: fmt lint test ## Tasks to make the code-base comply with the rules. Mostly used locally or in git hooks.
 
-check:  fmt_check lint test ## Check if the repository comply with the rules. Mostly used in CI.
+check:  fmt_check lint test doc_check ## Check if the repository comply with the rules. Mostly used in CI.
 
 
 release:  ## Create a release

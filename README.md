@@ -28,35 +28,40 @@
 ## Features
 
 - ROT encryption & decryption
+- Exhaustive testing
 
 ## Usage
 
 
 ``` rust
-use nrot::{rot13, rot13_letter, Mode};
+use nrot::{rot, rot_letter, Mode};
 
 fn encrypt(input: String) {
+    let rotation = 13;
+
     let input_length = input.len();
     let input_bytes = input.as_bytes();
 
     if input_length == 1 {
-        let byte_result = rot13_letter(Mode::Encrypt, input_bytes[0]);
+        let byte_result = rot_letter(Mode::Encrypt, input_bytes[0], rotation);
         println!("{}", String::from_utf8_lossy(&[byte_result]))
     } else {
-        let bytes_result = rot13(Mode::Encrypt, input_bytes);
+        let bytes_result = rot(Mode::Encrypt, input_bytes, rotation);
         println!("{}", String::from_utf8_lossy(&bytes_result))
     };
 }
 
 fn decrypt(input: String) {
+    let rotation = 13;
+
     let input_length = input.len();
     let input_bytes = input.as_bytes();
 
     if input_length == 1 {
-        let byte_result = rot13_letter(Mode::Decrypt, input_bytes[0]);
+        let byte_result = rot_letter(Mode::Decrypt, input_bytes[0], rotation);
         println!("{}", String::from_utf8_lossy(&[byte_result]))
     } else {
-        let bytes_result = rot13(Mode::Decrypt, input_bytes);
+        let bytes_result = rot(Mode::Decrypt, input_bytes, rotation);
         println!("{}", String::from_utf8_lossy(&bytes_result))
     };
 }
