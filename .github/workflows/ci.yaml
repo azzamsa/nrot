@@ -1,0 +1,129 @@
+name: ci
+
+env:
+  MIN_SUPPORTED_RUST_VERSION: "1.60.0"
+
+on:
+  pull_request:
+  push:
+    branches:
+    - master
+
+
+jobs:
+  code_quality:
+    name: Code quality
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Install rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          # nightly is only use for rustfmt
+          toolchain: nightly
+          default: true
+          profile: minimal # no documentation
+          components: clippy, rustfmt
+
+      - name: Install dprint
+        run: |
+          curl --location https://github.com/dprint/dprint/releases/download/0.30.3/dprint-x86_64-unknown-linux-gnu.zip --output dprint.zip
+          unzip dprint.zip
+          cp dprint ~/.cargo/bin/
+          dprint --version
+
+      - name: Cache
+        uses: Swatinem/rust-cache@v1
+
+      - name: Ensure `cargo fmt` has been run
+        run: make fmt_check
+
+      - name: Ensure MSRV is set in `clippy.toml`
+        run: grep "^msrv = \"${{ env.MIN_SUPPORTED_RUST_VERSION }}\"\$" clippy.toml
+
+      - name: Run clippy
+        run: make lint
+
+
+  min_version:
+    name: Minimum supported rust version
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Install rust toolchain (v${{ env.MIN_SUPPORTED_RUST_VERSION }})
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: ${{ env.MIN_SUPPORTED_RUST_VERSION }}
+          default: true
+          profile: minimal
+
+      - name: Cache
+        uses: Swatinem/rust-cache@v1
+
+      - name: Run tests
+        run: make test
+
+  build:
+    name: ${{ matrix.job.os }} (${{ matrix.job.target }})
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - { os: ubuntu-20.04, target: x86_64-unknown-linux-gnu    }
+          - { os: ubuntu-20.04, target: x86_64-unknown-linux-musl   , use-cross: true }
+          - { os: macos-11 , target: x86_64-apple-darwin            }
+          - { os: windows-2022, target: x86_64-pc-windows-gnu       }
+          - { os: windows-2022, target: x86_64-pc-windows-msvc      }
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          # nightly is only use for rustfmt
+          toolchain: nightly
+          target: ${{ matrix.job.target }}
+          override: true
+          profile: minimal
+
+      - name: Cache
+        uses: Swatinem/rust-cache@v1
+
+      - name: Show version information (Rust, cargo, GCC)
+        shell: bash
+        run: |
+          gcc --version || true
+          rustup -V
+          rustup toolchain list
+          rustup default
+          cargo -V
+          rustc -V
+
+      - name: Build
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: ${{ matrix.job.use-cross }}
+          command: build
+          args:  --release --target=${{ matrix.job.target }}
+
+      - name: Run tests
+        # Test in windows raises some errors
+        if: matrix.job.os != 'windows-2022'
+        uses: actions-rs/cargo@v1
+        with:
+          use-cross: ${{ matrix.job.use-cross }}
+          command: test
+          args:  --target=${{ matrix.job.target }}

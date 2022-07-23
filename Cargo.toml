@@ -1,0 +1,11 @@
+[package]
+name = "nrot"
+description = "simple letter substitution cipher"
+version = "0.1.0"
+authors = ["azzamsa <vcs@azzamsa.com>"]
+edition = "2021"
+keywords = ["encryption", "decryption", "rot"]
+categories = ["cryptography"]
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/azzamsa/nrot"
