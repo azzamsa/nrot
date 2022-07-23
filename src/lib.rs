@@ -121,147 +121,68 @@ mod tests {
     fn rot13_letter_encrypt() {
         let rotation = 13;
 
-        let input = b"a";
-        let result = b"n";
-        let encrypted = rot(Mode::Encrypt, input, rotation);
-        assert_eq!(result.as_slice(), &encrypted);
+        let encrypted = rot(Mode::Encrypt, b"a", rotation);
+        assert_eq!(b"n".as_slice(), &encrypted);
 
-        let input = b"A";
-        let result = b"N";
-        let encrypted = rot(Mode::Encrypt, input, rotation);
-        assert_eq!(result.as_slice(), &encrypted);
+        let encrypted = rot(Mode::Encrypt, b"A", rotation);
+        assert_eq!(b"N".as_slice(), &encrypted);
 
-        let input = b"Z";
-        let result = b"M";
-        let encrypted = rot(Mode::Encrypt, input, rotation);
-        assert_eq!(result.as_slice(), &encrypted);
+        let encrypted = rot(Mode::Encrypt, b"Z", rotation);
+        assert_eq!(b"M".as_slice(), &encrypted);
     }
 
     #[test]
     fn rot13_letter_decrypt() {
         let rotation = 13;
 
-        let input = b"n";
-        let result = b"a";
-        let encrypted = rot(Mode::Decrypt, input, rotation);
-        assert_eq!(result.as_slice(), &encrypted);
+        let encrypted = rot(Mode::Decrypt, b"n", rotation);
+        assert_eq!(b"a".as_slice(), &encrypted);
 
-        let input = b"N";
-        let result = b"A";
-        let encrypted = rot(Mode::Decrypt, input, rotation);
-        assert_eq!(result.as_slice(), &encrypted);
+        let encrypted = rot(Mode::Decrypt, b"N", rotation);
+        assert_eq!(b"A".as_slice(), &encrypted);
 
-        let input = b"M";
-        let result = b"Z";
-        let encrypted = rot(Mode::Decrypt, input, rotation);
-        assert_eq!(result.as_slice(), &encrypted);
+        let encrypted = rot(Mode::Decrypt, b"M", rotation);
+        assert_eq!(b"Z".as_slice(), &encrypted);
     }
 
     #[test]
     fn rot13_encrypt() {
         let rotation = 13;
 
-        let input = b"rust";
-        let result = b"ehfg";
-        let encrypted = rot(Mode::Encrypt, input, rotation);
-        assert_eq!(result.as_slice(), &encrypted);
+        let encrypted = rot(Mode::Encrypt, b"rust", rotation);
+        assert_eq!(b"ehfg".as_slice(), &encrypted);
 
-        let input = b"Hello, World!";
-        let result = b"Uryyb, Jbeyq!";
-        let encrypted = rot(Mode::Encrypt, input, rotation);
-        assert_eq!(result.as_slice(), &encrypted);
+        let encrypted = rot(Mode::Encrypt, b"Hello, World!", rotation);
+        assert_eq!(b"Uryyb, Jbeyq!".as_slice(), &encrypted);
     }
 
     #[test]
     fn rot13_dencrypt() {
         let rotation = 13;
 
-        let input = b"ehfg";
-        let result = b"rust";
-        let encrypted = rot(Mode::Decrypt, input, rotation);
-        assert_eq!(result.as_slice(), &encrypted);
+        let encrypted = rot(Mode::Decrypt, b"ehfg", rotation);
+        assert_eq!(b"rust".as_slice(), &encrypted);
 
-        let input = b"Uryyb, Jbeyq!";
-        let result = b"Hello, World!";
-        let encrypted = rot(Mode::Decrypt, input, rotation);
-        assert_eq!(result.as_slice(), &encrypted);
+        let encrypted = rot(Mode::Decrypt, b"Uryyb, Jbeyq!", rotation);
+        assert_eq!(b"Hello, World!".as_slice(), &encrypted);
     }
 
     #[test]
     fn all_rotations_encrypt() {
-        let encrypted = rot(Mode::Encrypt, b"rust", 1);
-        assert_eq!(b"svtu".as_slice(), &encrypted);
+        let pairs = vec![(1, b"svtu"), (12, b"dgef"), (25, b"qtrs")];
 
-        let encrypted = rot(Mode::Encrypt, b"rust", 2);
-        assert_eq!(b"twuv".as_slice(), &encrypted);
+        for (rotation, expected) in pairs {
+            let encrypted = rot(Mode::Encrypt, b"rust", rotation);
+            assert_eq!(expected.as_slice(), &encrypted);
+        }
+    }
 
-        let encrypted = rot(Mode::Encrypt, b"rust", 3);
-        assert_eq!(b"uxvw".as_slice(), &encrypted);
+    #[test]
+    fn offsite() {
+        let encrypted = rot(Mode::Encrypt, b"a", 0);
+        assert_eq!(b"a".as_slice(), &encrypted);
 
-        let encrypted = rot(Mode::Encrypt, b"rust", 4);
-        assert_eq!(b"vywx".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 5);
-        assert_eq!(b"wzxy".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 6);
-        assert_eq!(b"xayz".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 7);
-        assert_eq!(b"ybza".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 8);
-        assert_eq!(b"zcab".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 9);
-        assert_eq!(b"adbc".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 10);
-        assert_eq!(b"becd".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 11);
-        assert_eq!(b"cfde".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 12);
-        assert_eq!(b"dgef".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 13);
-        assert_eq!(b"ehfg".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 14);
-        assert_eq!(b"figh".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 15);
-        assert_eq!(b"gjhi".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 16);
-        assert_eq!(b"hkij".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 17);
-        assert_eq!(b"iljk".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 18);
-        assert_eq!(b"jmkl".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 19);
-        assert_eq!(b"knlm".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 20);
-        assert_eq!(b"lomn".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 21);
-        assert_eq!(b"mpno".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 22);
-        assert_eq!(b"nqop".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 23);
-        assert_eq!(b"orpq".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 24);
-        assert_eq!(b"psqr".as_slice(), &encrypted);
-
-        let encrypted = rot(Mode::Encrypt, b"rust", 25);
-        assert_eq!(b"qtrs".as_slice(), &encrypted);
+        let encrypted = rot(Mode::Encrypt, b"a", 26);
+        assert_eq!(b"a".as_slice(), &encrypted);
     }
 }
