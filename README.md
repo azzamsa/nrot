@@ -13,7 +13,7 @@
     <img src="https://img.shields.io/crates/v/nrot.svg">
   </a>
 
-  <a href=" https://docs.rs/nrot/">
+  <a href="https://docs.rs/nrot/">
     <img src="https://docs.rs/nrot/badge.svg">
   </a>
 
