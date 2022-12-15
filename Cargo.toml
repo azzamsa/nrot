@@ -1,11 +1,11 @@
 [package]
 name = "nrot"
-description = "simple letter substitution cipher"
 version = "2.0.0"
 authors = ["azzamsa <vcs@azzamsa.com>"]
+categories = ["cryptography"]
 edition = "2021"
 keywords = ["encryption", "decryption", "rot"]
-categories = ["cryptography"]
-readme = "README.md"
 license = "MIT"
+readme = "README.md"
 repository = "https://github.com/azzamsa/nrot"
+description = "simple letter substitution cipher"

@@ -1,23 +1,23 @@
 <div align="center">
   <h1>nROT</h1>
 
-  <img src='docs/padlock.svg' width=80px />
-  
-  Simple letter substitution cipher 🔐️
+<img src='docs/padlock.svg' width=80px />
 
-  <a href="https://github.com/azzamsa/nrot/workflows/ci.yml">
+Simple letter substitution cipher 🔐️
+
+<a href="https://github.com/azzamsa/nrot/workflows/ci.yml">
     <img src="https://github.com/azzamsa/nrot/workflows/ci/badge.svg" alt="Build status" />
   </a>
 
-  <a href="https://crates.io/crates/nrot">
+<a href="https://crates.io/crates/nrot">
     <img src="https://img.shields.io/crates/v/nrot.svg">
   </a>
 
-  <a href="https://docs.rs/nrot/">
+<a href="https://docs.rs/nrot/">
     <img src="https://docs.rs/nrot/badge.svg">
   </a>
 
-  <a href="https://azzamsa.com/support/">
+<a href="https://azzamsa.com/support/">
     <img alt="Sponsor me" src="https://img.shields.io/badge/Sponsor%20Me-%F0%9F%92%96-ff69b4">
   </a>
 
@@ -32,8 +32,7 @@
 
 ## Usage
 
-
-``` rust
+```rust
 use nrot::{rot, rot_letter, Mode};
 
 fn encrypt(input: String) {
@@ -79,5 +78,5 @@ To learn more, see other [examples](examples/).
 
 ## Credits
 
-- ROT13 implementation is inspired by [Cameron Phillips's ROT13](https://github.com/cameronp98/rot13) 
-- [Noto Emoji](https://github.com/googlefonts/noto-emoji) 
+- ROT13 implementation is inspired by [Cameron Phillips's ROT13](https://github.com/cameronp98/rot13)
+- [Noto Emoji](https://github.com/googlefonts/noto-emoji)
