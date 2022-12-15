@@ -12,16 +12,15 @@ fi
 if [ -n "$1" ]; then
     # update the version
     new_version=${1#v} # strip the `v` prefix
-    sed --in-place "0,/^version = .*/s//version = \"$new_version\"/" Cargo.toml
+    cargo set-version "$new_version"
 
-    # update Cargo.lock
-    cargo update
+    # Update the `Cargo.lock`
+    cargo update -p tin
 
     # update the changelog
     git-cliff --tag "$1" --sort newest --config configs/cliff.toml > CHANGELOG.md
-
     # format newly added changelog file
-    make fmt
+    just fmt
 
     git add -A && git commit -m "$1"
     git show
