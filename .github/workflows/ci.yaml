@@ -19,7 +19,9 @@ jobs:
           components: clippy, rustfmt
 
       - name: Install latest just release
-        uses: extractions/setup-just@v1
+        uses: taiki-e/install-action@v1
+        with:
+          tool: just
 
       - name: Install latest dprint release
         uses: taiki-e/install-action@v1
@@ -57,7 +59,9 @@ jobs:
         uses: taiki-e/install-action@nextest
 
       - name: Install latest just release
-        uses: extractions/setup-just@v1
+        uses: taiki-e/install-action@v1
+        with:
+          tool: just
 
       - name: Run tests
         run: just test
@@ -71,7 +75,7 @@ jobs:
         job:
           - { os: ubuntu-22.04, target: x86_64-unknown-linux-gnu    }
           - { os: ubuntu-22.04, target: x86_64-unknown-linux-musl   , use-cross: true }
-          - { os: macos-11 , target: x86_64-apple-darwin            }
+          - { os: macos-12, target: x86_64-apple-darwin            }
           - { os: windows-2022, target: x86_64-pc-windows-gnu       }
           - { os: windows-2022, target: x86_64-pc-windows-msvc      }
 
