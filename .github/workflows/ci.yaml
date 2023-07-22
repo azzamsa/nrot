@@ -1,13 +1,13 @@
-name: ci
+name: CI
 
 env:
-  MIN_SUPPORTED_RUST_VERSION: "1.65.0"
+  MIN_SUPPORTED_RUST_VERSION: "1.70.0"
 
 on: [push, pull_request]
 
 jobs:
   code_quality:
-    name: Code quality
+    name: Code Quality
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
@@ -18,17 +18,16 @@ jobs:
         with:
           components: clippy, rustfmt
 
+      - uses: Swatinem/rust-cache@v2
+
       - name: Install latest just release
         uses: taiki-e/install-action@just
 
       - name: Install latest dprint release
         uses: taiki-e/install-action@dprint
 
-      - name: Cache
-        uses: Swatinem/rust-cache@v2
-
-      - name: Ensure `cargo fmt` has been run
-        run: just fmt-check
+      - name: Ensure `fmt` has been run
+        run:  just fmt-check
 
       - name: Ensure MSRV is set in `clippy.toml`
         run: grep "^msrv = \"${{ env.MIN_SUPPORTED_RUST_VERSION }}\"\$" clippy.toml
@@ -37,7 +36,7 @@ jobs:
         run: just lint
 
   msrv:
-    name: Minimum supported rust version
+    name: Minimum Supported Rust Version
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout source code
@@ -48,14 +47,12 @@ jobs:
         with:
           toolchain: ${{ env.MIN_SUPPORTED_RUST_VERSION }}
 
-      - name: Cache
-        uses: Swatinem/rust-cache@v2
-
-      - name: Install latest nextest release
-        uses: taiki-e/install-action@nextest
+      - uses: Swatinem/rust-cache@v2
 
       - name: Install latest just release
         uses: taiki-e/install-action@just
+
+      - uses: taiki-e/install-action@nextest
 
       - name: Run tests
         run: just test
@@ -82,6 +79,8 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           target: ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
 
       - name: Show version information
         shell: bash
