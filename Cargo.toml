@@ -8,6 +8,7 @@ keywords = ["encryption", "decryption", "rot"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/azzamsa/nrot"
+rust-version = "1.73.0"
 description = "simple letter substitution cipher"
 
 [package.metadata.release]
