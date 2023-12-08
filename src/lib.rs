@@ -9,7 +9,7 @@ pub enum Mode {
 
 /// Get the value of 'a'
 ///
-/// Wheter it use 'A' or 'a' as initial value
+/// Whether it use 'A' or 'a' as initial value
 /// to preserve the case.
 ///
 fn get_first_alphabet_position(letter: u8) -> u8 {
